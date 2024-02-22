@@ -21,7 +21,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test("has title", async ({ page }) => {
-  await page.route("*/**/api/articles", async (route) => {
+  await page.route("*/**/api/articles*", async (route) => {
     //fetch original response
     const response = await route.fetch();
     const responseBody = await response.json();
