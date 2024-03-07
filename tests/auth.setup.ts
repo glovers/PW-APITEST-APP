@@ -1,8 +1,8 @@
-import { test as setup } from '@playwright/test';
-import user from '../.auth/user.json';
-import fs from 'fs';
+import { test as setup, expect } from "@playwright/test";
+import user from "../.auth/user.json";
+import fs from "fs";
 
-const authFile = '.auth/user.json';
+const authFile = ".auth/user.json";
 
 // setup(' authentication', async ({ page }) => {
 //   await page.goto('https://conduit.bondaracademy.com/');
@@ -15,19 +15,19 @@ const authFile = '.auth/user.json';
 //   await page.context().storageState({ path: authFile });
 // });
 
-setup(' authentication', async ({ request }) => {
+setup("authentication", async ({ request }) => {
   // this way is doing it via Api /  without UI which is quicker
 
-  const response = await request.post('https://conduit-api.bondaracademy.com/api/users/login', {
+  const response = await request.post("https://conduit-api.bondaracademy.com/api/users/login", {
     // You need to provide the request body as the second argument of the post method
-    data: { user: { email: 'testy@testy.com', password: 'test123' } },
+    data: { user: { email: "testy@testy.com", password: "test123" } },
   });
 
   const responseBody = await response.json();
   const accessToken = responseBody.user.token;
-  console.log('Access Token:', accessToken); // Log the access token
+  console.log("Access Token:", accessToken); // Log the access token
   user.origins[0].localStorage[0].value = accessToken;
   fs.writeFileSync(authFile, JSON.stringify(user));
 
-  process.env['ACCESS_TOKEN'] = accessToken;
+  process.env["ACCESS_TOKEN"] = accessToken;
 });
